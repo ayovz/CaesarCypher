@@ -47,21 +47,52 @@ print('''
  ██████    ██    ██      ██   ██ ███████ ██   ██ 
                                                  
 ''')
+def encrypt(text, shift):
+    result = ""
+    for char in text:
+        if char.isalpha():
+            shifted = (ord(char) - ord('a') + shift) % 26 + ord('a')
+            result += chr(shifted)
+        else:
+            result += char
+    print(f"Encrypted message: {result}")
+
+def decrypt(text, shift):
+    result = ""
+    for char in text:
+        if char.isalpha():
+            shifted = (ord(char) - ord('a') - shift) % 26 + ord('a')
+            result += chr(shifted)
+        else:
+            result += char
+    print(f"Decrypted message: {result}")
+
+
 program_on = True
 
 while program_on:
     direction = input("Type 'encode' to Encrypt, 'decode' to Decrypt, 'exit' to Exit: \n").lower()
 
-    if direction == 'encode':
+    if direction == 'encode' or direction == 'decode':
         text = input("Type your message: \n").lower()
-        shift = int(input("Type the shift number: \n"))
-        encrypt(text, shift)
-    elif direction == 'decode':
-        text = input("Type your message: \n").lower()
-        shift = int(input("Type the shift number: \n"))
-        decrypt(text, shift)
+
+        # Validate shift input
+        while True:
+            shift_input = input("Type the shift number: \n")
+            if shift_input.isdigit():
+                shift = int(shift_input)
+                break
+            else:
+                print("Please enter a valid number for the shift.")
+
+        if direction == 'encode':
+            encrypt(text, shift)
+        else:
+            decrypt(text, shift)
+
     elif direction == 'exit':
         print("Thank you for using Caesar Cipher!")
         program_on = False
     else:
-        print("Please type 'encode' or 'decode' or 'exit'")
+        print("Invalid command. Please type 'encode', 'decode', or 'exit'.")
+
